@@ -8,3 +8,4 @@
 /.mutineer/
 .DS_Store
 /config/*.key
+/docs/superpowers/

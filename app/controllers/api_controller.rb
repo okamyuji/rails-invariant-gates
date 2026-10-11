@@ -4,6 +4,14 @@ class ApiController < ActionController::API
     render_error("Not found", :not_found)
   end
 
+  rescue_from InventoryPosition::InsufficientStock do
+    render_error("Insufficient stock", :conflict)
+  end
+
+  rescue_from InventoryPosition::InvalidQuantity do
+    render_error("Invalid quantity", :unprocessable_content)
+  end
+
   private
 
   # 基数を省くと "010" が8、"0x1A" が26になるため、10進数に限定する。

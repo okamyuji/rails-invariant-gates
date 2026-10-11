@@ -6,10 +6,10 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resource :shipping_quote, only: :show
-  resources :orders, only: [] do
+  resources :orders, only: [], constraints: { order_id: /[0-9]+/ } do
     resource :cancellation, only: :create, controller: "order_cancellations"
   end
-  resources :products, only: [] do
+  resources :products, only: [], constraints: { product_id: /[0-9]+/ } do
     resources :reservations, only: :create, controller: "product_reservations"
   end
 

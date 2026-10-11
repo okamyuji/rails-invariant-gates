@@ -8,15 +8,20 @@ class ApiController < ActionController::API
     render_error("Insufficient stock", :conflict)
   end
 
+  rescue_from ActionDispatch::Http::Parameters::ParseError do
+    render_error("Invalid JSON", :bad_request)
+  end
+
   rescue_from InventoryPosition::InvalidQuantity do
     render_error("Invalid quantity", :unprocessable_content)
   end
 
   private
 
-  # 基数を省くと "010" が8、"0x1A" が26になるため、10進数に限定する。
+  # Integer() は基数10でも "1_000"・"+5"・" 5 " を受け付けるため、符号と数字だけの文字列に限る。
   def integer_param(key)
-    Integer(params[key].to_s, 10, exception: false)
+    value = params[key].to_s
+    Integer(value, 10) if value.match?(/\A-?[0-9]+\z/)
   end
 
   def render_error(message, status, **extra)

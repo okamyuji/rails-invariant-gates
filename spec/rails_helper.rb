@@ -1,7 +1,8 @@
 require "spec_helper"
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+# E2Eはトランザクションを使わずにレコードを消すため、test以外のDBへ接続したまま進めない。
+abort("specはtest環境でだけ実行します（現在: #{Rails.env}）") unless Rails.env.test?
 require "rspec/rails"
 
 begin

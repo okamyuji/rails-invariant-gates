@@ -4,7 +4,7 @@ class ShippingQuotesController < ApiController
     return render_error("Invalid amount", :unprocessable_content) unless amount
 
     render json: { shipping_fee: ShippingCalculator.new(order_amount: amount).calculate }
-  rescue ArgumentError => e
-    render_error(e.message, :unprocessable_content)
+  rescue ArgumentError
+    render_error("Invalid amount", :unprocessable_content)
   end
 end

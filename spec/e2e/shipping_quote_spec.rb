@@ -15,9 +15,9 @@ RSpec.describe "GET /shipping_quote", type: :e2e do
     end
   end
 
-  [ "0", "-1", "abc", "3.5", "0x1A" ].each do |amount|
-    it "注文金額#{amount}は422で拒否する" do
-      status, body = e2e_get("/shipping_quote?order_amount=#{amount}")
+  [ "0", "-1", "abc", "3.5", "0x1A", "1_000", "+5000", "0d5000", " 5000 " ].each do |amount|
+    it "注文金額#{amount.inspect}は422で拒否する" do
+      status, body = e2e_get("/shipping_quote?order_amount=#{ERB::Util.url_encode(amount)}")
 
       expect([ status, body ]).to eq([ 422, { "error" => "Invalid amount" } ])
     end

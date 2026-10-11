@@ -6,7 +6,7 @@ RSpec.describe "POST /products/:product_id/reservations", type: :e2e do
 
   let!(:product) { Product.create!(total_stock: 10, available_stock: 10, reserved_stock: 0) }
 
-  after { Product.delete_all }
+  after { Product.where(id: product.id).delete_all }
 
   def stocks = product.reload.slice(:total_stock, :available_stock, :reserved_stock).transform_keys(&:to_s)
 
@@ -37,7 +37,7 @@ RSpec.describe "POST /products/:product_id/reservations", type: :e2e do
     end
   end
 
-  [ 0, -1, 1.5, "abc", nil ].each do |quantity|
+  [ 0, -1, 1.5, "abc", nil, "1_0", "+3", " 3 " ].each do |quantity|
     it "数量#{quantity.inspect}は422を返し、DBを変えない" do
       response = e2e_post("/products/#{product.id}/reservations", { quantity: }.compact)
 
@@ -45,6 +45,24 @@ RSpec.describe "POST /products/:product_id/reservations", type: :e2e do
         expect(response).to eq([ 422, { "error" => "Invalid quantity" } ])
         expect(stocks).to eq("total_stock" => 10, "available_stock" => 10, "reserved_stock" => 0)
       end
+    end
+  end
+
+  it "壊れたJSONは400を返し、DBを変えない" do
+    response = e2e_post("/products/#{product.id}/reservations", "{bad json")
+
+    aggregate_failures do
+      expect(response).to eq([ 400, { "error" => "Invalid JSON" } ])
+      expect(stocks).to eq("total_stock" => 10, "available_stock" => 10, "reserved_stock" => 0)
+    end
+  end
+
+  it "IDの後ろに文字が付いたURLは404を返し、DBを変えない" do
+    status, = e2e_post("/products/#{product.id}abc/reservations", quantity: 1)
+
+    aggregate_failures do
+      expect(status).to eq(404)
+      expect(stocks).to eq("total_stock" => 10, "available_stock" => 10, "reserved_stock" => 0)
     end
   end
 

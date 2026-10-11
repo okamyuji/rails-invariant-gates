@@ -4,7 +4,7 @@
 
 ## 動かし方
 
-Ruby 4.0.7、Rails 8.1.4、MySQL 8.4で動かします。Rubyの版は `mise.toml` に書いています。ローカルの[mise](https://mise.jdx.dev/)、CIの[setup-ruby](https://github.com/ruby/setup-ruby)、RuboCopの対象版の判定は、どれもこのファイルを読みます。
+動作環境はRuby 4.0.7、Rails 8.1.4、MySQL 8.4です。Rubyの版は `mise.toml` に書いてあり、ローカルの[mise](https://mise.jdx.dev/)、CIの[setup-ruby](https://github.com/ruby/setup-ruby)、RuboCopの対象版の判定は、どれもこのファイルを読みます。
 
 ```sh
 mise install
@@ -29,13 +29,21 @@ bin/rails quality
 - YAMLの構文と、マージの衝突記号を確かめます。
 - `bin/rubocop --autocorrect` でRubyを整形し、規約違反を止めます。
 
-CIのlintジョブも、同じ設定を `pipx run pre-commit==4.6.2 run --all-files` で実行します。RuboCopは `bin/rubocop` 経由なので、ローカルとCIのどちらでも `Gemfile.lock` に書かれた版が動きます。pre-commit-hooksは、タグではなくコミットのSHAで版を指定しています。
+CIのlintジョブも、同じ設定を `pipx run pre-commit==4.6.2 run --all-files` で実行します。RuboCopは `bin/rubocop` 経由なので、ローカルとCIのどちらでも `Gemfile.lock` に書かれた版が動きます。pre-commit-hooksの版は、書き換えられないコミットのSHAで指定しました。
 
-全ファイルに一度かけるときは次を実行します。
+全ファイルに一度かけるときのコマンドは次のとおりです。
 
 ```sh
 pre-commit run --all-files
 ```
+
+## JSON APIとE2E
+
+送料見積もり、注文キャンセル、在庫引当はJSON APIで公開しており、契約は `AGENTS.md` の表のとおりです。
+
+`spec/e2e/` のE2Eは、空いているポートで `bin/rails server -e test` を子プロセスとして起動し、`Net::HTTP` で要求を送ります。データはspec側でコミットしてからサーバーに読ませ、各例の後で消すのが決まりです。在庫引当では、在庫1個に2本の要求を同時に送り、成功が1件だけになるかを見ます。サーバー側のカバレッジもSimpleCovでマージするので、コントローラも行カバレッジとCRAP値の対象です。
+
+evilutionは変異をテストのプロセスの中で当てるため、別プロセスのサーバーには届きません。このため、コントローラはevilutionの対象に入れていません。
 
 ## 弱いspecの再現
 

@@ -31,3 +31,14 @@
 - `--min-score` を下げない。`.evilution.yml` に除外を足さない。CRAP値の閾値を上げない。
 - CRAP値が15以上になったら、分岐を減らすかテストを足す。
 - アプリのコードで `update_columns` や `update_all` を使って不変条件の検証を飛ばさない。
+
+## HTTP APIの契約
+
+| 要求 | 成功 | 失敗 |
+|---|---|---|
+| `GET /shipping_quote?order_amount=N` | 200 `{"shipping_fee"}` | 整数でない・0以下は422 |
+| `POST /orders/:order_id/cancellation` | 200 `{"status":"cancelled"}` | キャンセルできなければ409（状態は変えない）、未存在は404 |
+| `POST /products/:product_id/reservations` | 201 在庫の3つの値 | 在庫不足は409、数量不正は422（DBは変えない）、未存在は404 |
+
+- コントローラには入力の変換、サービスの呼び出し、JSON化だけを書く。業務の規則はモデルとサービスに置く。
+- APIを変えたら、`spec/e2e/` のE2Eを先に直し、実サーバーで失敗することを確かめてから実装する。

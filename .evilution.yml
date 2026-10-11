@@ -1,0 +1,5 @@
+schema_version: 1
+spec_mappings:
+  app/services/inventory_reservation_service.rb:
+    - spec/services/inventory_reservation_service_spec.rb
+    - spec/integration/inventory_concurrency_spec.rb

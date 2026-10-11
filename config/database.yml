@@ -1,0 +1,20 @@
+default: &default
+  adapter: trilogy
+  encoding: utf8mb4
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV.fetch("DB_USER") { "root" } %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  host: <%= ENV.fetch("DB_HOST") { "127.0.0.1" } %>
+  port: <%= ENV.fetch("DB_PORT") { 3306 } %>
+
+development:
+  <<: *default
+  database: rails_invariant_gates_development
+
+test:
+  <<: *default
+  database: rails_invariant_gates_test
+
+production:
+  <<: *default
+  database: rails_invariant_gates_production

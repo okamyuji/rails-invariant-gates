@@ -1,0 +1,10 @@
+/.bundle
+/log/*
+!/log/.keep
+/tmp/*
+!/tmp/.keep
+/coverage/
+/.evilution/
+/.mutineer/
+.DS_Store
+/config/*.key

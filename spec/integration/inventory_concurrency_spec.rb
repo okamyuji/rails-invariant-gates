@@ -10,7 +10,7 @@ RSpec.describe "在庫引当の同時実行", type: :model do
 
   after { Product.where(id: product_id).delete_all }
 
-  it "在庫1個に2つの接続から同時に引き当てても成功は1件だけになる" do
+  it "CON-01 在庫1個に2つの接続から同時に引き当てても成功は1件だけになる" do
     ready = Queue.new
     go = Queue.new
 

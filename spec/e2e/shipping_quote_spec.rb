@@ -1,8 +1,9 @@
 require "rails_helper"
 require_relative "../support/e2e_server"
 
-RSpec.describe "GET /shipping_quote", type: :e2e do
+RSpec.describe "API-01 GET /shipping_quote", type: :e2e do
   {
+    "5001" => 0,
     "5000" => 0,
     "4999" => 500,
     "1" => 500,

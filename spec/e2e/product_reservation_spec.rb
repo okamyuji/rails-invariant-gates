@@ -1,7 +1,7 @@
 require "rails_helper"
 require_relative "../support/e2e_server"
 
-RSpec.describe "POST /products/:product_id/reservations", type: :e2e do
+RSpec.describe "API-03 POST /products/:product_id/reservations", type: :e2e do
   self.use_transactional_tests = false
 
   let!(:product) { Product.create!(total_stock: 10, available_stock: 10, reserved_stock: 0) }
@@ -70,7 +70,7 @@ RSpec.describe "POST /products/:product_id/reservations", type: :e2e do
     expect(e2e_post("/products/0/reservations", quantity: 1)).to eq([ 404, { "error" => "Not found" } ])
   end
 
-  it "在庫1個に2本の要求を同時に送っても、成功は1件だけになる" do
+  it "CON-01 在庫1個に2本の要求を同時に送っても、成功は1件だけになる" do
     product.update!(total_stock: 1, available_stock: 1, reserved_stock: 0)
     start = Queue.new
 

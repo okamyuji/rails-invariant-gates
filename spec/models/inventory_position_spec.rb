@@ -9,7 +9,7 @@ RSpec.describe InventoryPosition do
   let(:inventory) { build(total: 10, available: 10, reserved: 0) }
 
   describe ".new" do
-    it "整合性のある在庫状態を生成でき、凍結されている" do
+    it "POST-03 整合性のある在庫状態を生成でき、凍結されている" do
       position = build(total: 10, available: 7, reserved: 3)
 
       aggregate_failures do
@@ -20,7 +20,7 @@ RSpec.describe InventoryPosition do
       end
     end
 
-    it "すべて0の在庫状態を生成できる" do
+    it "INV-01 すべて0の在庫状態を生成できる" do
       expect(build(total: 0, available: 0, reserved: 0).total_stock).to eq(0)
     end
 

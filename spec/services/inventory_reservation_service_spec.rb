@@ -18,7 +18,7 @@ RSpec.describe InventoryReservationService do
       product.reload.attributes.slice("total_stock", "available_stock", "reserved_stock")
     end
 
-    it "引当後も在庫の不変条件を維持してDBに保存する" do
+    it "POST-04 引当後も在庫の不変条件を維持してDBに保存する" do
       expect(service.call(quantity: 3)).to be(true)
 
       expect(persisted_stocks).to eq(
@@ -26,7 +26,7 @@ RSpec.describe InventoryReservationService do
       )
     end
 
-    it "保存前の値ではなくロックして読み直した値から計算する" do
+    it "POST-04 保存前の値ではなくロックして読み直した値から計算する" do
       Product.where(id: product.id).update_all(available_stock: 4, reserved_stock: 6)
 
       service.call(quantity: 3)
@@ -36,7 +36,7 @@ RSpec.describe InventoryReservationService do
       )
     end
 
-    it "在庫不足の場合はDBの状態を変更しない" do
+    it "ERR-01 在庫不足の場合はDBの状態を変更しない" do
       before = persisted_stocks
 
       expect {
@@ -46,7 +46,9 @@ RSpec.describe InventoryReservationService do
       expect(persisted_stocks).to eq(before)
     end
 
-    it "保存に失敗したら握りつぶさずに例外を伝える" do
+    it "ERR-02 保存に失敗したら握りつぶさずに例外を伝える" do
+      # 実DBの行はCHECK制約が、未保存の変更はwith_lockが、引当後の値はInventoryPositionが拒否するため、
+      # バリデーションに落ちる状態を実DBでは作れない。update!をupdateに変える変異を見つけるため、ここだけvalid?をstubする。
       allow(product).to receive(:valid?).and_return(false)
 
       expect {
@@ -54,7 +56,7 @@ RSpec.describe InventoryReservationService do
       }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
-    it "不正な数量の場合はDBの状態を変更しない" do
+    it "ERR-01 不正な数量の場合はDBの状態を変更しない" do
       before = persisted_stocks
 
       expect {

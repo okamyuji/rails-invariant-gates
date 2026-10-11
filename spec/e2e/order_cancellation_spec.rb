@@ -1,7 +1,7 @@
 require "rails_helper"
 require_relative "../support/e2e_server"
 
-RSpec.describe "POST /orders/:order_id/cancellation", type: :e2e do
+RSpec.describe "API-02 POST /orders/:order_id/cancellation", type: :e2e do
   # サーバーは別プロセスなので、作ったレコードをコミットして見せる。
   self.use_transactional_tests = false
 

@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe PaymentService do
   describe "#charge" do
-    it "指定した金額で決済する" do
+    it "PAY-01 指定した金額で決済する" do
+      # 外部の決済APIはテストから呼べないため、呼び出しの契約だけを代役で確かめる。
       gateway = class_double(PaymentGateway)
 
       allow(gateway).to receive(:charge).and_return(status: "succeeded", amount: 1000)

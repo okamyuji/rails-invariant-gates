@@ -27,7 +27,7 @@ RSpec.describe CrapMetrics do
     described_class.new(paths: [ source ], resultset_path: write_resultset("RSpec" => { source => lines })).rows
   end
 
-  describe ".crap" do
+  describe "CRAP-01 .crap" do
     it "複雑度1でカバレッジ100%なら1になる" do
       expect(described_class.crap(1, 1.0)).to eq(1.0)
     end
@@ -41,7 +41,7 @@ RSpec.describe CrapMetrics do
     end
   end
 
-  describe ".report" do
+  describe "CRAP-05 .report" do
     def row(name, crap)
       CrapMetrics::Row.new(name:, location: "app/x.rb:1-3", complexity: 2, coverage: 0.5, crap:, flog: 3.25)
     end
@@ -65,7 +65,7 @@ RSpec.describe CrapMetrics do
     end
   end
 
-  describe "#rows の循環的複雑度" do
+  describe "CRAP-02 #rows の循環的複雑度" do
     {
       "分岐なし" => [ "x = 1\n    x", 1 ],
       "if と elsif" => [ "if a\n      1\n    elsif b\n      2\n    else\n      3\n    end", 3 ],
@@ -96,7 +96,7 @@ RSpec.describe CrapMetrics do
     end
   end
 
-  describe "#rows の名前と位置" do
+  describe "CRAP-04 #rows の名前と位置" do
     it "クラス、モジュール、特異メソッドを区別して名前を付け、入れ子を抜けたら元に戻す" do
       code = <<~RUBY
         module Shop
@@ -148,7 +148,7 @@ RSpec.describe CrapMetrics do
     end
   end
 
-  describe "#rows のカバレッジ" do
+  describe "CRAP-03 #rows のカバレッジ" do
     let(:code) { "def target(a)\n  if a\n    1\n  else\n    2\n  end\nend\n" }
 
     it "読み込み時に実行されるdefの行を除き、メソッド本体で実行された行の割合を使う" do
@@ -213,7 +213,7 @@ RSpec.describe CrapMetrics do
       expect(row.coverage).to eq(1.0)
     end
 
-    it "resultsetがなければ場所と対処を示して止める" do
+    it "CRAP-06 resultsetがなければ場所と対処を示して止める" do
       missing = dir.join("missing.json").to_s
 
       expect {
@@ -222,7 +222,7 @@ RSpec.describe CrapMetrics do
     end
   end
 
-  describe "#rows のflogスコア" do
+  describe "CRAP-07 #rows のflogスコア" do
     it "同じ位置のメソッドのflogスコアを並べ、flogが数えないメソッドは0にする" do
       code = "class A\n  attr_reader :x\n\n  def b(x)\n    x.foo.bar\n  end\n\n  def c; end\nend\n"
 
@@ -235,7 +235,7 @@ RSpec.describe CrapMetrics do
     end
   end
 
-  describe "#rows の並び" do
+  describe "CRAP-05 #rows の並び" do
     it "CRAP値の大きい順に並べる" do
       code = "def simple\n  1\nend\n\ndef branchy(a)\n  a ? 1 : 2\nend\n"
 

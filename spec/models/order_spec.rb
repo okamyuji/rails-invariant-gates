@@ -8,7 +8,7 @@ RSpec.describe Order, type: :model do
       shipped: false,
       cancelled: false
     }.each do |status, expected|
-      it "#{status}の場合は#{expected}を返す" do
+      it "ORD-01/02 #{status}の場合は#{expected}を返す" do
         order = described_class.new(status: status)
 
         expect(order.cancellable?).to eq(expected)

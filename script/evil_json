@@ -1,0 +1,5 @@
+#!/bin/sh
+# 使い方: script/evil_json <source.rb> <spec.rb> <name>
+set -eu
+NO_COVERAGE=1 bundle exec evilution run "$1" --spec "$2" -f json --output "tmp/$3.json" < /dev/null > /dev/null 2>&1 || true
+ruby script/survivors.rb "tmp/$3.json"

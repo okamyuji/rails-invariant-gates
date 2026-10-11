@@ -1,0 +1,20 @@
+#!/bin/sh
+# 記事に載せた変異の件数を、弱いspecと最終のspecの両方で取り直す。
+set -eu
+run() {
+  echo "== $1 / $2"
+  script/evil_json "$1" "$2" "$3"
+}
+run app/models/user.rb weak_specs/models/user_spec.rb user_weak
+run app/models/user.rb spec/models/user_spec.rb user_final
+run app/services/shipping_calculator.rb weak_specs/services/shipping_calculator_spec.rb shipping_weak
+run app/services/shipping_calculator.rb weak_specs/services/shipping_calculator_partial_spec.rb shipping_partial
+run app/services/shipping_calculator.rb spec/services/shipping_calculator_spec.rb shipping_final
+run app/models/order.rb weak_specs/models/order_spec.rb order_weak
+run app/models/order.rb spec/models/order_spec.rb order_final
+run app/services/order_cancellation_service.rb weak_specs/services/order_cancellation_service_spec.rb cancel_weak
+run app/services/order_cancellation_service.rb spec/services/order_cancellation_service_spec.rb cancel_final
+run app/services/payment_service.rb weak_specs/services/payment_service_spec.rb payment_weak
+run app/services/payment_service.rb spec/services/payment_service_spec.rb payment_final
+run app/models/inventory_position.rb weak_specs/models/inventory_position_invariant_only_spec.rb inventory_weak
+run app/models/inventory_position.rb spec/models/inventory_position_spec.rb inventory_final

@@ -1,0 +1,20 @@
+# CIのlintジョブも同じファイルを `pipx run pre-commit==4.6.2 run --all-files` で実行する。
+# rubocopは bin/rubocop 経由なので、ローカルとCIのどちらでも Gemfile.lock の版が動く。
+minimum_pre_commit_version: "4.6.2"
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # frozen: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+        exclude: \.enc$ # Railsは暗号文を末尾改行なしで書くため、credentials:edit のたびに差分が出る
+      - id: check-yaml
+      - id: check-merge-conflict
+  - repo: local
+    hooks:
+      - id: rubocop
+        name: rubocop
+        # --force-exclusion: ファイルを引数で渡すと .rubocop.yml の Exclude が効かなくなるため
+        entry: bin/rubocop --autocorrect --force-exclusion
+        language: system
+        types: [ruby]

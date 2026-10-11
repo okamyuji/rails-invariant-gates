@@ -4,7 +4,7 @@
 
 ## 契約の表（正本）
 
-どのspecも、名前（`describe`、`context`、`it` のどれか）に、この表のIDを1つ以上入れる。specが落ちたときに実装とspecのどちらが正しいかは、この表で判定する。
+どのspecも、名前（`describe`、`context`、`it` のどれか）に、この表のIDを1つ以上入れる。IDは、そのspecが実際に確かめている契約の行のものだけを付け、照合を通すためだけに付けない。`bin/rails contract_ids` は、IDのないspec、表にないID、specのない行を見つけて止める。ただし照合するのは名前の文字列だけで、specの中身がその行の契約を確かめているかは人間がレビューする。specが落ちたときに実装とspecのどちらが正しいかは、この表で判定する。
 
 ### 在庫引当
 
@@ -68,6 +68,14 @@
 | CRAP-06 | 計測結果のファイルがなければ、場所と対処を示して止める | `CrapMetrics#rows` |
 | CRAP-07 | flogのスコアを比較のために並べ、flogが数えないメソッドは0にする | `CrapMetrics#rows` |
 
+### 契約の表とspecの照合
+
+| ID | 契約 | 検証するspec |
+|---|---|---|
+| IDS-01 | 表の行の先頭の列にあるIDだけを、表のIDとして読み取る | `ContractIds.table_ids` |
+| IDS-02 | specの名前からIDを読み取り、`POST-01/02/03` は3つのIDとして数える | `ContractIds.references` |
+| IDS-03 | IDのないspec、表にないID、specのない行を返す | `ContractIds.check` |
+
 契約を変えるときは、この表を先に直し、人間の承認を得てからspecと実装を変える。
 表の行は、業務分析で決めた業務の決まりから作り、人間がレビューする。AIが行の下書きを作るときは、行ごとに根拠にした業務の資料を示す。今あるspecや実装から逆算した行は、そのことを明記し、人間が業務の決まりと照らすまで表に入れない。
 
@@ -99,7 +107,7 @@
 | API-01 | `GET /shipping_quote?order_amount=N` | 200 `{"shipping_fee"}` | 整数でない・0以下は422 |
 | API-02 | `POST /orders/:order_id/cancellation` | 200 `{"status":"cancelled"}` | キャンセルできなければ409（状態は変えない）、未存在は404 |
 | API-03 | `POST /products/:product_id/reservations` | 201 在庫の3つの値 | 在庫不足は409、数量不正は422、壊れたJSONは400（どれもDBは変えない）、未存在は404 |
-| API-04 | `GET /up` | 200 | なし |
+| API-04 | `GET /up` | 200 | アプリの起動時に例外があれば500 |
 
 - コントローラには入力の変換、サービスの呼び出し、JSON化だけを書く。業務の規則はモデルとサービスに置く。
 - APIを変えたら、`spec/e2e/` のE2Eを先に直し、実サーバーで失敗することを確かめてから実装する。

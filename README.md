@@ -17,9 +17,10 @@ bin/rails quality
 
 `bin/rails quality` は次の順に実行し、どれかが失敗すると止まります。
 
-1. `bundle exec rspec`（SimpleCovで行カバレッジ80%以上）
-2. `bundle exec evilution run ... --min-score 1.0`（生き残った変異が0件）
-3. `bin/rails 'crap_metrics[15]'`（CRAP値が15以上のメソッドが0件）
+1. `bin/rails contract_ids`（どのspecの名前にも `AGENTS.md` の契約の表のIDがあり、表のどの行にもそのIDを持つspecがある。名前の文字列だけを照合し、specの中身は見ない）
+2. `bundle exec rspec`（SimpleCovで行カバレッジ80%以上）
+3. `bundle exec evilution run ... --min-score 1.0`（生き残った変異が0件）
+4. `bin/rails 'crap_metrics[15]'`（CRAP値が15以上のメソッドが0件）
 
 ## フォーマッターとリンター
 

@@ -16,5 +16,5 @@ repos:
         name: rubocop
         # --force-exclusion: ファイルを引数で渡すと .rubocop.yml の Exclude が効かなくなるため
         entry: bin/rubocop --autocorrect --force-exclusion
-        language: system
+        language: unsupported
         types: [ruby]

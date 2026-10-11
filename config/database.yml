@@ -18,3 +18,5 @@ test:
 production:
   <<: *default
   database: rails_invariant_gates_production
+  # 本番ではrootを既定にせず、環境変数で接続ユーザーを渡す。
+  username: <%= ENV["DB_USER"] %>

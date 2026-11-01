@@ -67,6 +67,7 @@ RSpec.describe CrapMetrics do
 
   describe "CRAP-02 #rows の循環的複雑度" do
     {
+      "本体が空" => [ "", 1 ],
       "分岐なし" => [ "x = 1\n    x", 1 ],
       "if と elsif" => [ "if a\n      1\n    elsif b\n      2\n    else\n      3\n    end", 3 ],
       "後置 if と後置 unless" => [ "return 1 if a\n    return 2 unless b\n    3", 3 ],
@@ -232,6 +233,16 @@ RSpec.describe CrapMetrics do
         expect(rows.find { _1.name == "A#b" }.flog).to be > 0
         expect(rows.find { _1.name == "A#c" }.flog).to eq(0.0)
       end
+    end
+  end
+
+  describe "CRAP-02 内部の定数と公開範囲" do
+    it "分岐を数えるノードの一覧は書き換えられない" do
+      expect(described_class::BRANCH_NODES).to be_frozen
+    end
+
+    it "公開するインスタンスメソッドは #rows だけである" do
+      expect(described_class.public_instance_methods(false)).to contain_exactly(:rows)
     end
   end
 

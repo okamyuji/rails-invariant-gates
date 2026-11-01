@@ -3,7 +3,8 @@ class InventoryPosition
   class InvalidQuantity < StandardError; end
   class InsufficientStock < StandardError; end
 
-  attr_reader :total_stock,
+  # evilutionは変異を既存のクラスへ重ねて読み込むため、attr_readerを消す変異は元のメソッドが残り区別できない。
+  attr_reader :total_stock, # evilution:disable
               :available_stock,
               :reserved_stock
 

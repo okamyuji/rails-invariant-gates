@@ -85,15 +85,17 @@ class CrapMetrics
 
   # 入れ子のdefは別のメソッドとして数える。
   def decisions_in(node)
-    return 0 if node.nil? || node.instance_of?(Prism::DefNode)
+    return 0 if node.nil?
+    return 0 if node.instance_of?(Prism::DefNode)
 
     (decision?(node) ? 1 : 0) + node.compact_child_nodes.sum { decisions_in(it) }
   end
 
   def decision?(node)
-    BRANCH_NODES.include?(node.class) ||
-      (node.instance_of?(Prism::CallNode) && node.safe_navigation?) ||
-      node.class.name.end_with?("OrWriteNode", "AndWriteNode")
+    return true if BRANCH_NODES.include?(node.class)
+    return true if node.instance_of?(Prism::CallNode) && node.safe_navigation?
+
+    node.class.name.end_with?("OrWriteNode", "AndWriteNode")
   end
 
   # defの行はクラスの読み込み時に実行されるため、本体がある限り分母から外す。

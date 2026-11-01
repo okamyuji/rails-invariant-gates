@@ -20,6 +20,14 @@ RSpec.describe InventoryPosition do
       end
     end
 
+    it "POST-03 在庫数を書き換えるメソッドを持たない" do
+      expect(inventory).not_to respond_to(:total_stock=, :available_stock=, :reserved_stock=)
+    end
+
+    it "INV-01/02/03 不変条件の検証メソッドを外へ公開しない" do
+      expect(described_class.private_instance_methods(false)).to include(:validate_invariants!)
+    end
+
     it "INV-01 すべて0の在庫状態を生成できる" do
       expect(build(total: 0, available: 0, reserved: 0).total_stock).to eq(0)
     end

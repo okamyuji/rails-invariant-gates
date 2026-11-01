@@ -1,6 +1,10 @@
 require "rails_helper"
 
 RSpec.describe User do
+  it "ADULT-01/02 年齢を作成後に書き換えるメソッドを持たない" do
+    expect(User.new(age: 20)).not_to respond_to(:age=)
+  end
+
   describe "#adult?" do
     it "ADULT-01 20歳なら成人である" do
       expect(User.new(age: 20).adult?).to eq(true)

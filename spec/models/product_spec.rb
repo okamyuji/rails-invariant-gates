@@ -47,6 +47,25 @@ RSpec.describe Product, type: :model do
     end
   end
 
+  describe "保存則の検証の欠損の扱い" do
+    {
+      "総在庫" => { total: nil, available: 7, reserved: 3 },
+      "引当可能在庫" => { total: 10, available: nil, reserved: 3 },
+      "引当済み在庫" => { total: 10, available: 7, reserved: nil }
+    }.each do |label, stocks|
+      it "INV-03 #{label}が欠けているときは保存則の検証を飛ばす" do
+        product = build_product(**stocks)
+
+        expect(product).not_to be_valid
+        expect(product.errors[:base]).to be_empty
+      end
+    end
+
+    it "INV-02 保存則の検証メソッドを外へ公開しない" do
+      expect(described_class.private_instance_methods(false)).to include(:stock_conservation)
+    end
+  end
+
   describe "#inventory_position" do
     it "MAP-01 保存されている在庫数からInventoryPositionを作る" do
       position = build_product(total: 10, available: 7, reserved: 3).inventory_position

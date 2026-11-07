@@ -4,7 +4,7 @@
 
 ## 動かし方
 
-動作環境はRuby 4.0.7、Rails 8.1.4、MySQL 8.4です。Rubyの版は `mise.toml` に書いてあり、ローカルの[mise](https://mise.jdx.dev/)、CIの[setup-ruby](https://github.com/ruby/setup-ruby)、RuboCopの対象版の判定は、どれもこのファイルを読みます。
+動作環境はRuby 4.0.7、Rails 8.1.4.1、MySQL 8.4です。Rubyの版は `mise.toml` に書いてあり、ローカルの[mise](https://mise.jdx.dev/)、CIの[setup-ruby](https://github.com/ruby/setup-ruby)、RuboCopの対象版の判定は、どれもこのファイルを読みます。
 
 ```sh
 mise install

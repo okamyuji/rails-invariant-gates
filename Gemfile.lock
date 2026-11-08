@@ -286,7 +286,7 @@ GEM
     simpleidn (0.3.0)
     thor (1.5.0)
     timeout (0.6.1)
-    trilogy (2.13.2)
+    trilogy (2.13.3)
       bigdecimal
     tsort (0.2.0)
     tzinfo (2.0.6)
@@ -326,7 +326,7 @@ DEPENDENCIES
   rspec-rails (~> 8.0)
   rubocop-rails-omakase
   simplecov (~> 1.3)
-  trilogy (~> 2.7)
+  trilogy (~> 2.13)
   tzinfo-data
 
 CHECKSUMS
@@ -429,7 +429,7 @@ CHECKSUMS
   simpleidn (0.3.0) sha256=12ca730bed2f3db04d11e9bfd1bca3e11fb37f55b21eb2e9793fb5814bf54d03
   thor (1.5.0) sha256=e3a9e55fe857e44859ce104a84675ab6e8cd59c650a49106a05f55f136425e73
   timeout (0.6.1) sha256=78f57368a7e7bbadec56971f78a3f5ecbcfb59b7fcbb0a3ed6ddc08a5094accb
-  trilogy (2.13.2) sha256=2b3bf465cedc3d117c2b981e6e771da8855bc398ad77cad93815fbd6d62a82da
+  trilogy (2.13.3) sha256=02a2cfc1506b14dd8cf2d9956c157dcc534e157537baf384607a68f60fb10b7d
   tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
   tzinfo (2.0.6) sha256=8daf828cc77bcf7d63b0e3bdb6caa47e2272dcfaf4fbfe46f8c3a9df087a829b
   unicode-display_width (3.3.0) sha256=4b7aa66a4b11db50f6f7e98411215cd0dd10eaecb665d36eec5bcacb3fa0b613

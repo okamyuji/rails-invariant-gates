@@ -1,4 +1,5 @@
 schema_version: 1
+preload: spec/evilution_preload.rb
 spec_mappings:
   app/services/inventory_reservation_service.rb:
     - spec/services/inventory_reservation_service_spec.rb

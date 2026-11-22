@@ -24,5 +24,5 @@ end
 
 group :test do
   gem "simplecov", "~> 1.3", require: false
-  gem "evilution", "~> 1.5", require: false
+  gem "evilution", "~> 1.6", require: false
 end
